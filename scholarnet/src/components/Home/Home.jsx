@@ -6,6 +6,7 @@ import vg from "../../assets/images/bg.png"
 import {CgGoogle, CgYoutube} from "react-icons/cg"
 import {SiCoursera, SiUdemy} from "react-icons/si"
 import {DiAws} from "react-icons/di"
+import introVideo from "../../assets/videos/intro.mp4"
 
 
 const Home = () => {
@@ -21,7 +22,7 @@ const Home = () => {
         spacing={['16', '56']} 
         >
           <VStack width={"full"} alignItems={["center", "flex-end"]}>
-            <Heading children="Elevate Your Learning Journey with Us" size={'2xl'} /> 
+            <Heading children="Elevate Your Learning Journey with Us" size={'xl'} /> 
             <Text children="Find Valuable Content At Reasonable Price" />
             <Link to='/courses'>
               <Button size={"lg"} colorScheme='yellow'>
@@ -30,11 +31,11 @@ const Home = () => {
             
             </Link>
           </VStack> 
-          <Image boxSize={"md"} src={vg} objectFit="contain"></Image> 
+          <Image className= "photo1" boxSize={"md"} src={vg} objectFit="contain"></Image> 
         </Stack>
 
       </div> 
-<Box>
+<Box padding={'8'} bg={"blackAlpha.800"}>
 
 <Heading 
       textAlign={"center"}
@@ -42,9 +43,8 @@ const Home = () => {
       color={"yellow.400"}
       children="OUR BRANDS" />
 
-</Box>
- <Box>
- <HStack>
+
+ <HStack className='AppBanner' justifyContent={'space-evenly'} marginTop="4">
         <CgGoogle />
         <CgYoutube />
         <SiCoursera />
@@ -54,7 +54,13 @@ const Home = () => {
 
 
  </Box>
-      
+ 
+ <div className="container2">
+
+  <video autoPlay controls controlsList='nodownload nofullscreen noremoteplayback ' src={introVideo} >
+
+  </video>
+ </div>
     </section> // vg is image location upr me. 
     
   );
