@@ -49,3 +49,18 @@ align-items: center;
         width: 100%;
         }
         }
+        .course{
+           
+            width: 300px;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            transition: all 0.5s;
+        }
+        .course:hover{
+            transform: translateY(-10px);
+        }
+        .course.title{
+            
+                text-align: center;
+            
+        }
