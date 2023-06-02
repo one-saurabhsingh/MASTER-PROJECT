@@ -140,7 +140,7 @@ const Courses = () => {
           views={69}
           imageSrc={imageSrc}
           id={'Sample'}
-          creator={': Mr. Singh'}
+          creator={': SAURABH KR. SINGH'}
           lectureCount={23}
           addToPlaylistHandler={addToPlaylistHandler}
         />
