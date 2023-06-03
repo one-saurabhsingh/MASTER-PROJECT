@@ -17,7 +17,13 @@ const Login = () => {
   return (
     <Container h={'90vh'}>
       <VStack h={'full'} justifyContent={'center'} spacing={'16'}>
-        <Heading fontFamily={'monospace'} color={'yellow.400'} fontSize={'40px'} fo children="Welcome to ScholarNet" />
+        <Heading
+          fontFamily={'monospace'}
+          color={'yellow.400'}
+          fontSize={'40px'}
+          fo
+          children="Welcome to ScholarNet"
+        />
 
         <form>
           <Box my={'4'}>
@@ -50,20 +56,31 @@ const Login = () => {
           </Box>
           <Box>
             <Link to="/forgetpassword">
-              <Button fontSize={'sm'} variant="link">
+              <Button fontSize={'sm'}  variant="link" >
                 Forget Password ?
               </Button>
             </Link>
           </Box>
 
-          <Button my="4" color={'blackAlpha.900'} colorScheme={'yellow'} type="submit">
+          <Button
+          width={'full'}
+            my="4"
+            color={'blackAlpha.900'}
+            colorScheme={'yellow'}
+            type="submit"
+          >
             Login
           </Button>
 
-          <Box fontFamily={"mono"} my="4">
-            New User ? {' '}
+          <Box fontFamily={'mono'} my="4">
+            New User ?{' '}
             <Link to="/register">
-              <Button fontFamily={'sans-serif'} fontSize={'xl'} colorScheme={'yellow'} variant="link">
+              <Button
+                fontFamily={'sans-serif'}
+                fontSize={'xl'}
+                colorScheme={'yellow'}
+                variant="link"
+              >
                 Sign Up
               </Button>
             </Link>{' '}
