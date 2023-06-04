@@ -66,7 +66,7 @@ const Contact = () => {
           </Button>
 
           <Box my="4">
-              Want a new course ?{' '}
+            Want a new course ?{' '}
             <Link to="/request">
               <Button colorScheme={'yellow'} variant="link">
                 Click

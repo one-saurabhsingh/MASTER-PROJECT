@@ -176,7 +176,7 @@ You agree to defend, indemnify, and hold us harmless, including our subsidiaries
 
 22. USER DATA
 
-We will maintain certain data that you transmit to the Site for the purpose of managing the performance of the Site, as well as data relating to your use of the Site. Although we perform regular routine backups of data, you are solely responsible for all data that you transmit or that relates to any activity you have undertaken using the Site. You agree that we shall have no liability to you for any loss or corruption of any such data, and you hereby waive any right of action against us arising from any such loss or corruption of such data.
+Data ki to maa chod dunga bhosdiwaalo.
 
 
 23. ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES
@@ -194,12 +194,11 @@ These Terms of Use and any policies or operating rules posted by us on the Site 
 In order to resolve a complaint regarding the Site or to receive further information regarding use of the Site, please contact us at:
 
 Video Streaming
-asasddasd
-dasdasd, UP 4534534
+Dholakpur
+Bangaal , 17121214
 India
-Phone: __________
-official.6packprogrammer@gmail.com
-
+Phone: 6204XXXXXX
+one.saurabhsingh@gmail.com
 `;
 
 export default data;
