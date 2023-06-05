@@ -1,6 +1,5 @@
 import {
   Button,
-  Center,
   Container,
   Heading,
   HStack,
@@ -10,7 +9,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import imageSrc from '../../assets/images/Mern.jpg';
 const Course = ({
@@ -139,7 +138,7 @@ const Courses = () => {
           }
           views={69}
           imageSrc={imageSrc}
-          id={'Sample'}
+          id={'001'}
           creator={': SAURABH KR. SINGH'}
           lectureCount={23}
           addToPlaylistHandler={addToPlaylistHandler}
