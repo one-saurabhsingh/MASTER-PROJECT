@@ -21,13 +21,14 @@ import Sidebar from '../Sidebar';
 const Users = () => {
   const users = [
     {
+     _id: '001',
       name: 'Saurabh Kumar Singh',
       email: 'one.saurabhsingh@gmail.com',
       createdAt: String(new Date().toISOString()),
       avatar: {
         url: 'sadsad',
       },
-      role: 'user',
+      role: 'admin',
       subscription: {
         status: 'active',
       },

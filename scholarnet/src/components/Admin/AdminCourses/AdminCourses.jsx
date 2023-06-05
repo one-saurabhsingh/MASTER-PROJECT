@@ -4,6 +4,7 @@ import {
   Grid,
   Heading,
   HStack,
+  Image,
   Table,
   TableCaption,
   TableContainer,
@@ -12,48 +13,47 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import cursor from '../../../assets/images/cursor.png';
 import Sidebar from '../Sidebar';
+import CourseModal from './CourseModal';
 
-const Users = () => {
-  const users = [
+const AdminCourses = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const courses = [
     {
-      name: 'Saurabh Kumar Singh',
-      email: 'one.saurabhsingh@gmail.com',
-      createdAt: String(new Date().toISOString()),
-      avatar: {
-        url: 'sadsad',
+      _id: 'sample1',
+      title: 'course1',
+      description: 'this is the first video of Artificial Intelligence',
+      poster: {
+        url: 'saksdnjkj',
       },
-      role: 'user',
-      subscription: {
-        status: 'active',
-      },
-      playlist: [
-        {
-          course: 'sadsad',
-          poster: 'sdassd',
-        },
-        {
-          course: 'sadsad',
-          poster: 'sdassd',
-        },
-        {
-          course: 'sadsad',
-          poster: 'sdassd',
-        },
-      ],
+      category: 'Artificial Intelligence',
+      createdBy: 'Saurabh Kr. Singh',
+      views: '133',
+      numOfVideos: '15',
     },
   ];
-  const updateHandler = () => {
-    console.log('updateHandler');
-  };
-  const deleteButtonHandler = () => {
-    console.log('deleteButtonHandler');
+
+  const coureDetailsHandler = ({ index, title }) => {
+    console.log(index);
+    console.log(title);
+    onOpen();
   };
 
+  const deleteButtonHandler = ({ index }) => {
+    console.log(index);
+  };
+  const deleteLectureButtonHandler = ({ index }) => {
+    console.log(index);
+  };
+  const addLectureHandler = ({ index }) => {
+    console.log(index);
+  };
   return (
     <Grid
       css={{
@@ -62,40 +62,51 @@ const Users = () => {
       minH={'100vh'}
       templateColumns={['1fr', '5fr 1fr']}
     >
-      <Box p={['0', '16']} overflowX={'auto'}>
+      <Box p={['0', '8']} overflowX="auto">
         <Heading
           textTransform={'uppercase'}
-          children="All Users"
+          children="All Courses"
           my="16"
           textAlign={['center', 'left']}
         />
 
         <TableContainer w={['100vw', 'full']}>
           <Table variant={'simple'} size="lg">
-            <TableCaption>All available users in the database</TableCaption>
+            <TableCaption>All available courses are in database.</TableCaption>
+
             <Thead>
               <Tr>
                 <Th>Id</Th>
-                <Th>Name</Th>
-                <Th>Email</Th>
-                <Th>Role</Th>
-                <Th>Subscription</Th>
+                <Th>Poster</Th>
+                <Th>Title</Th>
+                <Th>Category</Th>
+                <Th>Creator</Th>
+                <Th isNumeric>Views</Th>
+                <Th isNumeric>Lectures</Th>
                 <Th isNumeric>Action</Th>
               </Tr>
             </Thead>
+
             <Tbody>
-              {users &&
-                users.map(item => (
-                  <Row
-                    updateHandler={updateHandler}
-                    deleteButtonHandler={deleteButtonHandler}
-                    key={item._id}
-                    item={item}
-                  />
-                ))}
+              {courses.map(item => (
+                <Row
+                  coureDetailsHandler={coureDetailsHandler}
+                  deleteButtonHandler={deleteButtonHandler}
+                  key={item._id}
+                  item={item}
+                />
+              ))}
             </Tbody>
           </Table>
         </TableContainer>
+        <CourseModal
+          isOpen={isOpen}
+          onClose={onClose}
+          id={courses._id}
+          courseTitle={courses.title}
+          deleteButtonHandler={deleteLectureButtonHandler}
+          addLectureHandler={addLectureHandler}
+        />
       </Box>
 
       <Sidebar />
@@ -103,28 +114,31 @@ const Users = () => {
   );
 };
 
-export default Users;
-
-function Row({ item, updateHandler, deleteButtonHandler }) {
+function Row({ item, coureDetailsHandler, deleteButtonHandler, loading }) {
   return (
     <Tr>
       <Td>#{item._id}</Td>
-      <Td>{item.name}</Td>
-      <Td>{item.email}</Td>
-      <Td>{item.role}</Td>
+
       <Td>
-        {item.subscription && item.subscription.status === 'active'
-          ? 'active'
-          : 'not active'}
+        <Image src={item.poster.url} />
       </Td>
+
+      <Td>{item.title}</Td>
+      <Td 
+      // textTransform={'uppercase'}
+      >{item.category}</Td>
+      <Td>{item.createdBy}</Td>
+      <Td isNumeric>{item.views}</Td>
+      <Td isNumeric>{item.numOfVideos}</Td>
+
       <Td isNumeric>
         <HStack justifyContent={'flex-end'}>
           <Button
-            onClick={() => updateHandler(item._id)}
+            onClick={() => coureDetailsHandler(item._id, item.title)}
             variant={'outline'}
             color="purple.500"
           >
-            Change Role
+            View Lectures
           </Button>
 
           <Button
@@ -138,3 +152,4 @@ function Row({ item, updateHandler, deleteButtonHandler }) {
     </Tr>
   );
 }
+export default AdminCourses;

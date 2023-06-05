@@ -33,7 +33,7 @@ export const LineChart = ({ views = [] }) => {
       },
       title: {
         display: true,
-        text: 'Yearly Views',
+        text: 'Yearly Views (in hunderds)',
       },
     },
   };
