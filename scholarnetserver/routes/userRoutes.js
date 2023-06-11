@@ -1,8 +1,7 @@
 import express from "express";
-import { getMyProfile, login, logout, register , changePassword, updateProfile,resetPassword ,forgetPassword ,updateProfilePicture} from "../controllers/userController.js";
+import { getMyProfile, login, logout, register ,addToPlaylist, changePassword, updateProfile,resetPassword ,forgetPassword ,updateProfilePicture, removeFromPlaylist} from "../controllers/userController.js";
 import {isAuthenticated} from "../middlewares/auth.js"
-// import { authorizeAdmin, isAuthenticated } from "../middlewares/auth.js";
-// import singleUpload from "../middlewares/multer.js";
+
 
 const router = express.Router();
 
@@ -39,11 +38,11 @@ router.route("/forgetpassword").post(forgetPassword);
 //reset password
 router.route("/resetpassword/:token").put(resetPassword);
 
-// //Add to playlist
-// router.route("/addtoplaylist").post(isAuthenticated, addToPlaylist);
+//Add to playlist
+router.route("/addtoplaylist").post(isAuthenticated, addToPlaylist);
 
-// //Remove from playlist
-// router.route("/removefromplaylist").delete(isAuthenticated, removeFromPlaylist);
+//Remove from playlist
+router.route("/removefromplaylist").delete(isAuthenticated, removeFromPlaylist);
 
 
 // //Admin Routes

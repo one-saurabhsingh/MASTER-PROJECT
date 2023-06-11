@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import validator from "validator";
 import jwt  from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 const schema = new mongoose.Schema({
     name:{
@@ -85,7 +86,7 @@ const resetToken = crypto.randomBytes(20).toString("hex");
 
 this.resetPasswordToken= crypto.createHash("sha256").update(resetToken).digest("hex");
 
-this.resetPasswordExpire = Date.now() + 15*60 *1000;
+this.resetPasswordExpire = Date.now() + 5*60 *1000;
 
 return resetToken;
 }

@@ -1,5 +1,6 @@
 import express from "express";
-import { createCourse, getAllCourses } from "../controllers/courseController.js";
+import { addLectures, createCourse, getAllCourses, getCourseLectures } from "../controllers/courseController.js";
+import singleUpload from "../middlewares/multer.js";
 
 
 const router = express.Router();
@@ -10,7 +11,13 @@ router.route("/courses").get(getAllCourses);
 
 //for creating course - only admin
 
-router.route("/createcourse").post(createCourse);
+router.route("/createcourse").post(singleUpload ,createCourse);
 
+
+// Add Lecture, Delete Course, Get Course Details
+
+router.route("/course/:id").get(getCourseLectures).post(singleUpload , addLectures);
+
+router.route("/course")
 
 export default router;
