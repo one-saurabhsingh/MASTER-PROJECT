@@ -3,6 +3,7 @@ import {Course} from "../models/Course.js"
 import ErrorHandler from "../utils/errorHandler.js";
 import cloudinary from "cloudinary";
 import getDataUri from "../utils/dataUri.js";
+import { Stats } from "../models/Stats.js";
 
 export const getAllCourses = catchAsyncError(
     async (req,res,next) => {
