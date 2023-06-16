@@ -1,6 +1,7 @@
+
 export const sendTokens =(res,user,message,statusCode=200) =>{
 
-const token = user.getJWTToken(); // To generate JWT Token
+const token = user.getJWTToken();
 
 
 const options ={

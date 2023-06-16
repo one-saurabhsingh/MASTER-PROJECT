@@ -36,7 +36,7 @@ const Home = () => {
             <Heading
               under
               fontFamily={'cursive'}
-              children="Elevate Your Learning Journey with Us"
+              children="Come and Elevate Your Learning Journey with Us"
               size={'2xl'}
             />
             <Text
