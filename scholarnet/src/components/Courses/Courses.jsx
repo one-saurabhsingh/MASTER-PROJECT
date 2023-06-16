@@ -9,9 +9,14 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import imageSrc from '../../assets/images/Mern.jpg';
+import { getAllCourses } from '../../redux/actions/course';
+import { addToPlaylist } from '../../redux/actions/profile';
+import { loadUser } from '../../redux/actions/user';
+
 const Course = ({
   views,
   title,
@@ -83,16 +88,37 @@ const Courses = () => {
   const [keywords, setKeywords] = useState('');
   const [category, setCategory] = useState('');
 
-  const addToPlaylistHandler = () => {
-    console.log('added to the playlist');
+  const dispatch = useDispatch();
+
+  const addToPlaylistHandler = async courseid => {
+    await dispatch(addToPlaylist(courseid));
+    dispatch(loadUser());
   };
+
+  const { loading, error, courses, message } = useSelector(
+    state => state.course
+  );
+
+  useEffect(() => {
+    dispatch(getAllCourses(category, keywords));
+
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+    }
+  }, [category, keywords, dispatch, error, message]);
 
   const categories = [
     'Web development',
-    'Artificial Intelligence',
-    'Machine Learning',
+    'Artificial Intellegence',
     'Data Structure & Algorithm',
     'App Development',
+    'Machine Learning',
     'Data Science',
     'Game Development',
   ];
@@ -105,8 +131,7 @@ const Courses = () => {
         onChange={e => {
           setKeywords(e.target.value);
         }}
-        textAlign={'left'}
-        placeholder={'Search Course'}
+        placeholder={'Search a Course...'}
         type={'text'}
         focusBorderColor={'yellow.500'}
       />
@@ -115,7 +140,9 @@ const Courses = () => {
         overflowX={'auto'}
         paddingY="8"
         css={{
-          '&::-webkit-scrollbar-track': {},
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
         }}
       >
         {categories.map((item, index) => (
@@ -131,18 +158,24 @@ const Courses = () => {
         justifyContent={['flex-start', 'space-evenly']}
         alignItems={['center', 'flex-start']}
       >
-        <Course
-          title={'MERN STACK PROJECT'}
-          description={
-            'Comprehensive MERN stack course'
-          }
-          views={69}
-          imageSrc={imageSrc}
-          id={'001'}
-          creator={': SAURABH KR. SINGH'}
-          lectureCount={23}
-          addToPlaylistHandler={addToPlaylistHandler}
-        />
+        {courses.length > 0 ? (
+          courses.map(item => (
+            <Course
+              key={item._id}
+              title={item.title}
+              description={item.description}
+              views={item.views}
+              imageSrc={item.poster.url}
+              id={item._id}
+              creator={item.createdBy}
+              lectureCount={item.numOfVideos}
+              addToPlaylistHandler={addToPlaylistHandler}
+              loading={loading}
+            />
+          ))
+        ) : (
+          <Heading mt="4" children="Courses Not Found" />
+        )}
       </Stack>
     </Container>
   );

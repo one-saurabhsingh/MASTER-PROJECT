@@ -15,45 +15,78 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
+import { useDispatch, useSelector } from 'react-redux';
 import cursor from '../../../assets/images/cursor.png';
 import Sidebar from '../Sidebar';
 import CourseModal from './CourseModal';
+import {
+  getAllCourses,
+  getCourseLectures,
+} from '../../../redux/actions/course';
+import {
+  addLecture,
+  deleteCourse,
+  deleteLecture,
+} from '../../../redux/actions/admin';
+import toast from 'react-hot-toast';
 
 const AdminCourses = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { courses, lectures } = useSelector(state => state.course);
 
-  const courses = [
-    {
-      _id: 'sample1',
-      title: 'course1',
-      description: 'this is the first video of Artificial Intelligence',
-      poster: {
-        url: 'saksdnjkj',
-      },
-      category: 'Artificial Intelligence',
-      createdBy: 'Saurabh Kr. Singh',
-      views: '133',
-      numOfVideos: '15',
-    },
-  ];
+  const { loading, error, message } = useSelector(state => state.admin);
 
-  const coureDetailsHandler = ({ index, title }) => {
-    console.log(index);
-    console.log(title);
+  const dispatch = useDispatch();
+
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const [courseId, setCourseId] = useState('');
+  const [courseTitle, setCourseTitle] = useState('');
+
+  const coureDetailsHandler = (courseId, title) => {
+    dispatch(getCourseLectures(courseId));
     onOpen();
+    setCourseId(courseId);
+    setCourseTitle(title);
+  };
+  const deleteButtonHandler = courseId => {
+    console.log(courseId);
+    dispatch(deleteCourse(courseId));
   };
 
-  const deleteButtonHandler = ({ index }) => {
-    console.log(index);
+  const deleteLectureButtonHandler = async (courseId, lectureId) => {
+    await dispatch(deleteLecture(courseId, lectureId));
+    dispatch(getCourseLectures(courseId));
   };
-  const deleteLectureButtonHandler = ({ index }) => {
-    console.log(index);
+
+  const addLectureHandler = async (e, courseId, title, description, video) => {
+    e.preventDefault();
+    const myForm = new FormData();
+
+    myForm.append('title', title);
+    myForm.append('description', description);
+    myForm.append('file', video);
+
+    await dispatch(addLecture(courseId, myForm));
+    dispatch(getCourseLectures(courseId));
   };
-  const addLectureHandler = ({ index }) => {
-    console.log(index);
-  };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+    }
+
+    dispatch(getAllCourses());
+  }, [dispatch, error, message, onClose]);
+
   return (
     <Grid
       css={{
@@ -72,7 +105,7 @@ const AdminCourses = () => {
 
         <TableContainer w={['100vw', 'full']}>
           <Table variant={'simple'} size="lg">
-            <TableCaption>All available courses are in database.</TableCaption>
+            <TableCaption>All available courses in the database</TableCaption>
 
             <Thead>
               <Tr>
@@ -94,18 +127,22 @@ const AdminCourses = () => {
                   deleteButtonHandler={deleteButtonHandler}
                   key={item._id}
                   item={item}
+                  loading={loading}
                 />
               ))}
             </Tbody>
           </Table>
         </TableContainer>
+
         <CourseModal
           isOpen={isOpen}
           onClose={onClose}
-          id={courses._id}
-          courseTitle={courses.title}
+          id={courseId}
+          courseTitle={courseTitle}
           deleteButtonHandler={deleteLectureButtonHandler}
           addLectureHandler={addLectureHandler}
+          lectures={lectures}
+          loading={loading}
         />
       </Box>
 
@@ -124,9 +161,7 @@ function Row({ item, coureDetailsHandler, deleteButtonHandler, loading }) {
       </Td>
 
       <Td>{item.title}</Td>
-      <Td 
-      // textTransform={'uppercase'}
-      >{item.category}</Td>
+      <Td textTransform={'uppercase'}>{item.category}</Td>
       <Td>{item.createdBy}</Td>
       <Td isNumeric>{item.views}</Td>
       <Td isNumeric>{item.numOfVideos}</Td>
@@ -137,6 +172,7 @@ function Row({ item, coureDetailsHandler, deleteButtonHandler, loading }) {
             onClick={() => coureDetailsHandler(item._id, item.title)}
             variant={'outline'}
             color="purple.500"
+            isLoading={loading}
           >
             View Lectures
           </Button>
@@ -144,6 +180,7 @@ function Row({ item, coureDetailsHandler, deleteButtonHandler, loading }) {
           <Button
             onClick={() => deleteButtonHandler(item._id)}
             color={'purple.600'}
+            isLoading={loading}
           >
             <RiDeleteBin7Fill />
           </Button>

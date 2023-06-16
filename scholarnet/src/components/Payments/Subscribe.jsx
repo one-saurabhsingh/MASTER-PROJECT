@@ -7,9 +7,73 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { buySubscription } from '../../redux/actions/user';
+import { server } from '../../redux/store';
+import logo from '../../assets/images/logo.png';
+import { toast } from 'react-hot-toast';
 
-const Subscribe = () => {
+const Subscribe = ({ user }) => {
+  const dispatch = useDispatch();
+  const [key, setKey] = useState('');
+
+  const { loading, error, subscriptionId } = useSelector(
+    state => state.subscription
+  );
+  const { error: courseError } = useSelector(state => state.course);
+
+  const subscriptionHandler = async () => {
+    const { data } = await axios.get(`${server}/razorpaykey`);
+    setKey(data.key);
+    dispatch(buySubscription());
+  };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+    if (courseError) {
+      toast.error(courseError);
+      dispatch({ type: 'clearError' });
+    }
+    if (subscriptionId) {
+      const openPopUp = () => {
+        const options = {
+          key,
+          name: 'ScholarNet',
+          description: 'Premium contents are waiting for you !',
+          image: logo,
+          subscription_id: subscriptionId,
+          callback_url: `${server}/paymentverification`,
+          prefill: {
+            name: user.name,
+            email: user.email,
+            contact: '',
+          },
+          notes: {
+            address: 'Saurabh at ScholarNet',
+          },
+          theme: {
+            color: '#FFC800',
+          },
+        };
+        const razor = new window.Razorpay(options);
+        razor.open();
+      };
+      openPopUp();
+    }
+  }, [
+    dispatch,
+    error,
+    key,
+    subscriptionId,
+    user.name,
+    user.email,
+    courseError,
+  ]);
+
   return (
     <Container h="90vh" p="16">
       <Heading children="Welcome" my="8" textAlign={'center'} />
@@ -29,8 +93,14 @@ const Subscribe = () => {
             <Heading size="md" children={'₹299 Only'} />
           </VStack>
 
-          <Button my="8" w="full" colorScheme={'yellow'}>
-            Buy Now
+          <Button
+            isLoading={loading}
+            onClick={subscriptionHandler}
+            my="8"
+            w="full"
+            colorScheme={'yellow'}
+          >
+            Buy Now !
           </Button>
         </Box>
 
@@ -45,7 +115,7 @@ const Subscribe = () => {
           <Text
             fontSize={'xs'}
             color="white"
-            children={'*Terms & Conditions Apply'}
+            children={'*Terms & Conditions Applied'}
           />
         </Box>
       </VStack>

@@ -6,7 +6,7 @@ const token = user.getJWTToken(); // To generate JWT Token
 const options ={
     expires:new Date(Date.now() + 1000 * 60 * 60 * 24 * 15),
     httpOnly:true,
-    // secure:true,
+    secure:true,
     sameSite:"none",
 }
 

@@ -7,7 +7,21 @@ import { Stats } from "../models/Stats.js";
 
 export const getAllCourses = catchAsyncError(
     async (req,res,next) => {
-        const courses= await Course.find().select("-lectures");
+
+        const keyword = req.query.keyword || "";
+        const category = req.query.category || "";
+        const courses= await Course.find(
+            {
+                title:{
+                    $regex: keyword,
+                    $options: "i", //i  insensitive for case.
+                },
+                category:{
+                    $regex: category,
+                    $options: "i", 
+                },
+            }
+        ).select("-lectures");
         res.status(200).json({
             success:true,
             courses,
@@ -166,21 +180,18 @@ export const getAllCourses = catchAsyncError(
             } );
 
 
-            Course.watch().on("change", async()=>{
-                const stats = await Stats.find({}).sort({createdAt: "desc"}).limit(1);
-            
-                const courses = await Course.find({});
+ Course.watch().on("change", async () => {
+  const stats = await Stats.find({}).sort({ createdAt: "desc" }).limit(1);
 
-                let totalViews=0
+  const courses = await Course.find({});
 
-                for (let i = 0; i < courses.length; i++) {
-                    totalViews+= courses[i].views;
-                    
-                }
+  let totalViews = 0;
 
-                stats[0].views = totalViews;
-                stats[0].createdAt= new Date(Date.now());
-            
-                await stats[0].save();
-            
-            })                
+  for (let i = 0; i < courses.length; i++) {
+    totalViews += courses[i].views;
+  }
+  stats[0].views = totalViews;
+  stats[0].createdAt = new Date(Date.now());
+
+  await stats[0].save();
+});              

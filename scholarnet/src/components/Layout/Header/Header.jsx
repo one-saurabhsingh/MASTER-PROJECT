@@ -1,36 +1,35 @@
-import React from 'react';
 import {
   Button,
-  DrawerBody,
   Drawer,
-  DrawerOverlay,
+  DrawerBody,
   DrawerContent,
   DrawerHeader,
+  DrawerOverlay,
+  HStack,
   useDisclosure,
   VStack,
-  HStack,
 } from '@chakra-ui/react';
+import React from 'react';
 import { ColorModeSwitcher } from '../../../ColorModeSwitcher';
 import { RiDashboardFill, RiLogoutBoxLine, RiMenu5Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../redux/actions/user';
 
-const LinkButton = ({ url = '/', title = 'Home' }) => (
-  <Link to={url}>
+const LinkButton = ({ url = '/', title = 'Home', onClose }) => (
+  <Link onClick={onClose} to={url}>
     <Button variant={'ghost'}>{title}</Button>
   </Link>
 );
 
-const Header = () => {
+const Header = ({ isAuthenticated = false, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const isAuthenticated = true;
 
-  const user = {
-    role: 'admin',
-  };
+  const dispatch = useDispatch();
 
   const logoutHandler = () => {
-    console.log('Logout');
     onClose();
+    dispatch(logout());
   };
 
   return (
@@ -50,10 +49,12 @@ const Header = () => {
       >
         <RiMenu5Fill />
       </Button>
+
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
-        <DrawerOverlay backdropFilter={'blur(3px)'} />
+        <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader borderBottomWidth={'1px'}>COURSE HANDLER</DrawerHeader>
+          <DrawerHeader borderBottomWidth={'1px'}>Course-App</DrawerHeader>
+
           <DrawerBody>
             <VStack spacing={'4'} alignItems="flex-start">
               <LinkButton onClose={onClose} url="/" title="Home" />
@@ -81,24 +82,19 @@ const Header = () => {
                     <VStack>
                       <HStack>
                         <Link onClick={onClose} to="/profile">
-                          <Button
-                            onClick={onClose}
-                            variant={'ghost'}
-                            colorScheme={'yellow'}
-                          >
+                          <Button variant={'ghost'} colorScheme={'yellow'}>
                             Profile
-                          </Button>{' '}
-                          I
+                          </Button>
                         </Link>
                         <Button variant={'ghost'} onClick={logoutHandler}>
                           <RiLogoutBoxLine />
                           Logout
-                        </Button>{' '}
-                        I
+                        </Button>
                       </HStack>
+
                       {user && user.role === 'admin' && (
-                        <Link to="/admin/dashboard">
-                          <Button colorScheme="purple" variant={'ghost'}>
+                        <Link onClick={onClose} to="/admin/dashboard">
+                          <Button colorScheme={'purple'} variant="ghost">
                             <RiDashboardFill style={{ margin: '4px' }} />
                             Dashboard
                           </Button>
@@ -111,7 +107,9 @@ const Header = () => {
                     <Link onClick={onClose} to="/login">
                       <Button colorScheme={'yellow'}>Login</Button>
                     </Link>
+
                     <p>OR</p>
+
                     <Link onClick={onClose} to="/register">
                       <Button colorScheme={'yellow'}>Sign Up</Button>
                     </Link>

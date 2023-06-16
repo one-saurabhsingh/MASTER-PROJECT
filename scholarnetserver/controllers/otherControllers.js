@@ -49,38 +49,36 @@ export const courseRequest = catchAsyncError(async(req,res,next)=>{
 })
 
 
-export const getDashboardStats = catchAsyncError(async(req,res,next)=>{
-    
-    const stats= await Stats.find({}).sort({createdAt:"desc"}).limit(12);
+export const getDashboardStats = catchAsyncError(async (req, res, next) => {
+  const stats = await Stats.find({}).sort({ createdAt: "desc" }).limit(12);
 
-    const statsData=[];
+  const statsData = [];
 
-    for(let i=0;i<stats.length;i++){
-        statsData.unshift(stats[i]);  //unshift se hrr data aage se push hota hai...
-    }
+  for (let i = 0; i < stats.length; i++) {
+    statsData.unshift(stats[i]);
+  }
+  const requiredSize = 12 - stats.length;
 
-    const requiredSize = 12-stats.length;
+  for (let i = 0; i < requiredSize; i++) {
+    statsData.unshift({
+      users: 0,
+      subscription: 0,
+      views: 0,
+    });
+  }
 
-    for(let i=0;i<requiredSize;i++){
-        statsData.unshift({
-            users:0,
-            views:0,
-            subscription:0,
-        });
-    }
+  const usersCount = statsData[11].users;
+  const subscriptionCount = statsData[11].subscription;
+  const viewsCount = statsData[11].views;
 
-    const usersCount=statsData[11].users;
-    const viewsCount=statsData[11].views;
-    const subscriptionCount=statsData[11].subscription;
-
-    let usersPercentage = 0,
+  let usersPercentage = 0,
     viewsPercentage = 0,
     subscriptionPercentage = 0;
   let usersProfit = true,
     viewsProfit = true,
     subscriptionProfit = true;
 
-    if (statsData[10].users === 0) usersPercentage = usersCount * 100;
+  if (statsData[10].users === 0) usersPercentage = usersCount * 100;
   if (statsData[10].views === 0) viewsPercentage = viewsCount * 100;
   if (statsData[10].subscription === 0)
     subscriptionPercentage = subscriptionCount * 100;
@@ -100,22 +98,17 @@ export const getDashboardStats = catchAsyncError(async(req,res,next)=>{
     if (subscriptionPercentage < 0) subscriptionProfit = false;
   }
 
-
-
-
-    res.status(200)
-    .json({
-        success:true,
-        stats: statsData,
-        usersCount,
-        subscriptionCount,
-        viewsCount,
-        subscriptionPercentage,
-        viewsPercentage,
-        usersPercentage,
-        subscriptionProfit,
-        viewsProfit,
-        usersProfit,
-
-    });
+  res.status(200).json({
+    success: true,
+    stats: statsData,
+    usersCount,
+    subscriptionCount,
+    viewsCount,
+    subscriptionPercentage,
+    viewsPercentage,
+    usersPercentage,
+    subscriptionProfit,
+    viewsProfit,
+    usersProfit,
+  });
 });
