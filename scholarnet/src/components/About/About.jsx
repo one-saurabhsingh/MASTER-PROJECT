@@ -21,8 +21,8 @@ const Founder = () => (
   <Stack direction={['column', 'row']} spacing={['4', '16']} padding={'8'}>
     <VStack>
       <HStack>
-        <Avatar src={dp} boxSize={['40', '48']} />
-        <Avatar src={PG} boxSize={['40', '48']} />
+        <Avatar src={dp} boxSize={['20', '24']} />
+        <Avatar src={PG} boxSize={['20', '24']} />
       </HStack>
 
       <Text children="Founder" opacity={0.5} />
