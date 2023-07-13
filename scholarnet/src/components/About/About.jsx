@@ -29,8 +29,8 @@ const Founder = () => (
     </VStack>
     <VStack justifyContent={'center'} alignItems={['center', 'flex-start']}>
       <Heading
-        children="Saurabh Kumar Singh"
-        size={['md', 'xl']}
+        children="Saurabh Kumar Singh & Piyush Ghosh"
+        size={['sm', 'l']}
         color={'yellow.300'}
       />
       <Text
