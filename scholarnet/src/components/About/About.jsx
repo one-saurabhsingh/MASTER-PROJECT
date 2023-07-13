@@ -15,14 +15,14 @@ import { Link } from 'react-router-dom';
 import introVideo from '../../assets/videos/intro.mp4';
 import termsAndCondition from '../../assets/docs/termsAndCondition';
 import dp from '../../assets/images/profile.jpg';
-import PG from '../../assets/images/PG.png';
+import gg from '../../assets/images/PG.png';
 
 const Founder = () => (
   <Stack direction={['column', 'row']} spacing={['4', '16']} padding={'8'}>
     <VStack>
       <HStack>
         <Avatar src={dp} boxSize={['20', '24']} />
-        <Avatar src={PG} boxSize={['20', '24']} />
+        <Avatar src={gg} boxSize={['20', '24']} />
       </HStack>
 
       <Text children="Founder" opacity={0.5} />
