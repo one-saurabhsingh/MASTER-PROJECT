@@ -25,7 +25,7 @@ const Founder = () => (
         <Avatar src={gg} boxSize={['20', '24']} />
       </HStack>
 
-      <Text children="Founder" opacity={0.5} />
+      <Text children="Co-Founders" opacity={0.5} />
     </VStack>
     <VStack justifyContent={'center'} alignItems={['center', 'flex-start']}>
       <Heading
