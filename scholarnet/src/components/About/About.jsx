@@ -14,12 +14,17 @@ import { RiSecurePaymentFill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import introVideo from '../../assets/videos/intro.mp4';
 import termsAndCondition from '../../assets/docs/termsAndCondition';
-import dp from '../../assets/images/profile.jpg'
+import dp from '../../assets/images/profile.jpg';
+import PG from '../../assets/images/PG.png';
 
 const Founder = () => (
   <Stack direction={['column', 'row']} spacing={['4', '16']} padding={'8'}>
     <VStack>
-      <Avatar src={dp} boxSize={['40', '48']} />
+      <HStack>
+        <Avatar src={dp} boxSize={['40', '48']} />
+        <Avatar src={PG} boxSize={['40', '48']} />
+      </HStack>
+
       <Text children="Founder" opacity={0.5} />
     </VStack>
     <VStack justifyContent={'center'} alignItems={['center', 'flex-start']}>
@@ -30,7 +35,7 @@ const Founder = () => (
       />
       <Text
         textAlign={['center', 'left']}
-        children={`As the founder of our groundbreaking video streaming platform, my vision is to revolutionize the way people consume and access media, providing seamless access to a vast library of captivating content anytime, anywhere.`}
+        children={`As the founders of our groundbreaking video streaming platform, our vision is to revolutionize the way people consume and access media, providing seamless access to a vast library of captivating content anytime, anywhere.`}
       />
       <Text
         textAlign={['center', 'left']}
