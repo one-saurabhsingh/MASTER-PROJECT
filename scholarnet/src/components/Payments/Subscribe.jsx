@@ -1,81 +1,75 @@
 import {
-  Box,
-  Button,
-  Container,
-  Heading,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+    Box,
+    Button,
+    Container,
+    Heading,
+    Text,
+    VStack,
+  } from '@chakra-ui/react';
+  import axios from 'axios';
+  import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { buySubscription } from '../../redux/actions/user';
-import { server } from '../../redux/store';
+import {server} from "../../redux/store"
 import logo from '../../assets/images/logo.png';
 import { toast } from 'react-hot-toast';
 
-const Subscribe = ({ user }) => {
-  const dispatch = useDispatch();
-  const [key, setKey] = useState('');
 
-  const { loading, error, subscriptionId } = useSelector(
-    state => state.subscription
-  );
-  const { error: courseError } = useSelector(state => state.course);
+const Subscribe = ({user}) => {
 
-  const subscriptionHandler = async () => {
-    const { data } = await axios.get(`${server}/razorpaykey`);
-    setKey(data.key);
-    dispatch(buySubscription());
+const dispatch = useDispatch();
+const [key,setKey] = useState("");
+
+const {loading,error,subscriptionId} =useSelector(state => state.subscription);
+const {error: courseError} =useSelector(state => state.course);
+
+const subscriptionHandler =async() =>{
+  const {data} = await axios.get(`${server}/razorpaykey`);
+ setKey(data.key);
+ dispatch(buySubscription());
+}
+
+useEffect(() => {
+ if(error){
+  toast.error(error);
+  dispatch({type: 'clearError'});
+ }
+ if(courseError){
+  toast.error(courseError);
+  dispatch({type: 'clearError'});
+ }
+ if(subscriptionId){
+  const openPopUp = () =>{
+const options ={
+  key,
+  name: "App-course",
+  description: "Get the premium access",
+  image:logo,
+  subscription_id:subscriptionId,
+  callback_url: `${server}/paymentverification`,
+  prefill: {
+    name: user.name,
+    email: user.email,
+    contact: '',
+  },
+  notes: {
+    address: '6 pack programmer at youtube',
+  },
+  theme: {
+    color: '#FFC800',
+  },
+};
+const razor = new window.Razorpay(options);
+razor.open();
   };
+  openPopUp();
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-      dispatch({ type: 'clearError' });
-    }
-    if (courseError) {
-      toast.error(courseError);
-      dispatch({ type: 'clearError' });
-    }
-    if (subscriptionId) {
-      const openPopUp = () => {
-        const options = {
-          key,
-          name: 'ScholarNet',
-          description: 'Premium contents are waiting for you !',
-          image: logo,
-          subscription_id: subscriptionId,
-          callback_url: `${server}/paymentverification`,
-          prefill: {
-            name: user.name,
-            email: user.email,
-            contact: '',
-          },
-          notes: {
-            address: 'Saurabh at ScholarNet',
-          },
-          theme: {
-            color: '#FFC800',
-          },
-        };
-        const razor = new window.Razorpay(options);
-        razor.open();
-      };
-      openPopUp();
-    }
-  }, [
-    dispatch,
-    error,
-    key,
-    subscriptionId,
-    user.name,
-    user.email,
-    courseError,
-  ]);
+ }
+}, [dispatch,error,key,subscriptionId,user.name,user.email,courseError])
+
 
   return (
-    <Container h="90vh" p="16">
+     <Container h="90vh" p="16">
       <Heading children="Welcome" my="8" textAlign={'center'} />
 
       <VStack
@@ -89,18 +83,18 @@ const Subscribe = ({ user }) => {
         </Box>
         <Box p="4">
           <VStack textAlign={'center'} px="8" mt={'4'} spacing="8">
-            <Text children={`Join pro pack and get access to all our content.`} />
+            <Text children={`Join pro pack and get access to all content.`} />
             <Heading size="md" children={'₹299 Only'} />
           </VStack>
 
           <Button
-            isLoading={loading}
-            onClick={subscriptionHandler}
+          isLoading={loading}
+          onClick={subscriptionHandler}
             my="8"
             w="full"
             colorScheme={'yellow'}
-          >
-            Buy Now !
+              >
+            Buy Now
           </Button>
         </Box>
 
@@ -115,12 +109,12 @@ const Subscribe = ({ user }) => {
           <Text
             fontSize={'xs'}
             color="white"
-            children={'*Terms & Conditions Applied'}
+            children={'*Terms & Conditions Apply'}
           />
         </Box>
       </VStack>
     </Container>
-  );
-};
+  )
+}
 
-export default Subscribe;
+export default Subscribe
